@@ -68,7 +68,11 @@ function App() {
     };
 
     const connectToWebSocket = (user) => {
-        const sockJsUrl = `https://encrypted-chat-application-uh5z.onrender.com/ws-chat`;
+        // --- THIS IS THE FIRST FIX ---
+        const baseUrl = process.env.REACT_APP_API_URL;
+        // Use the environment variable, not a hard-coded URL
+        const sockJsUrl = `${baseUrl}/ws-chat`;
+        // --------------------------
 
         const client = new Client({
             webSocketFactory: () => new SockJS(sockJsUrl, null, {
@@ -241,7 +245,11 @@ function App() {
 
                 // Fetch receiver's public key
                 console.log(`[ENCRYPT] Fetching public key for ${to}...`);
-                const response = await fetch(`https://encrypted-chat-application-uh5z.onrender.com/api/keys/${to}`, {
+
+                // --- THIS IS THE SECOND FIX ---
+                const baseUrl = process.env.REACT_APP_API_URL;
+                const response = await fetch(`${baseUrl}/api/keys/${to}`, {
+                // ----------------------------
                     credentials: 'include'
                 });
 
