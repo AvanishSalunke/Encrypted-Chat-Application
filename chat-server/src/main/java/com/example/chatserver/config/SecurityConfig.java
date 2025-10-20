@@ -49,7 +49,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
   @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("https://encrypted-chat-application.vercel.app"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("https://vercel.com/avanishs-projects-9914a3fd/encrypted-chat-application/CG3awjLjbhuh7Np31GWjbpPc4xRY"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
