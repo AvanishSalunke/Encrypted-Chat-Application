@@ -16,19 +16,18 @@ function Register({ onRegisterSuccess, onSwitchToLogin }) {
         setMessage('Generating encryption keys...');
 
         try {
-            // Generate RSA key pair
             console.log("Generating RSA key pair...");
             const keyPair = await generateRSAKeyPair();
             console.log("RSA key pair generated");
 
-            // Export public key as JWK
             const publicKeyJWK = await exportPublicKeyAsJWK(keyPair.publicKey);
             console.log("Public key exported");
 
-            // Send registration data + public key to server FIRST
-            // (Don't store private key until we know registration succeeded)
             setMessage('Registering user...');
-            const response = await fetch('https://encrypted-chat-application-uh5z.onrender.com/api/register', {
+            
+            const baseUrl = process.env.REACT_APP_API_URL;
+            const response = await fetch(`${baseUrl}/api/register`, {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,7 +44,6 @@ function Register({ onRegisterSuccess, onSwitchToLogin }) {
             const result = await response.text();
 
             if (response.ok) {
-                // Only store private key after successful registration
                 setMessage('Storing encryption keys...');
                 await storePrivateKey(keyPair.privateKey);
                 console.log("Private key stored in IndexedDB");
@@ -57,7 +55,6 @@ function Register({ onRegisterSuccess, onSwitchToLogin }) {
                     onSwitchToLogin();
                 }, 2000);
             } else {
-                // Registration failed - don't store the private key
                 setMessage(result);
                 console.error("Registration failed:", result);
             }

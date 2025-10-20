@@ -11,7 +11,6 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
         e.preventDefault();
 
         try {
-            // Check if private key exists in IndexedDB
             const privateKey = await getPrivateKey();
 
             if (!privateKey) {
@@ -21,7 +20,9 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
 
             console.log("Private key found in IndexedDB");
 
-            const response = await fetch('https://encrypted-chat-application-uh5z.onrender.com/api/login', {
+            const baseUrl = process.env.REACT_APP_API_URL;
+            const response = await fetch(`${baseUrl}/api/login`, {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
